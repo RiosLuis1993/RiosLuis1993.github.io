@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Magic The Gathering</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  </head>
+  <body>
+
+    <div class="container">
+      <h3>card name</h3>
+      <input type="text" />
+      <button class="btn btn-success">get card</button>
+      <h3>picture</h3>
+      <img src="" alt="" />
+    </div>
+
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script type="text/javascript"></script>
+    <script>
+    //https://api.deckbrew.com/mtg/cards
+    var replaceAll = function(string,find,replace){
+      return string.replace(new RegExp(find, "g"),replace);
+    }
+    //refactoring
+    $(".btn-success").on("click", function() {
+      var userInput = $("input");
+      var image = $("img");
+      //i don't know what regex, but it works!
+      var fixSpaces = replaceAll(userInput.val()," ","-");
+      var fixApostrophes = replaceAll(fixSpaces,"'","")
+      console.log(fixSpaces);
+
+      $.ajax({
+        url: "https://api.deckbrew.com/mtg/cards/" + fixApostrophes,
+        success: function(card) {
+          image.attr("src",card.editions[0].image_url);
+        },
+      });
+    })
+</script>
+      </body>
+</html>
